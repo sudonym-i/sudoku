@@ -48,6 +48,7 @@ function genorateSudoku() {
     createNumberMap()
     generatePuzzle()
 }
+
 genorateSudoku()
 const addedMemory = []
 for (let y = 0; y < rows; y++) {
