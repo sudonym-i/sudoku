@@ -1,10 +1,13 @@
 let canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
+
 ctx.font = `10px monospace`;
-const temporaryPositions = []
-const answerMap = []
-const numberMap = []
-let modifyer = false; let mobileFactor = 0
+const temporaryPositions = [];
+const answerMap = [];
+const numberMap = [];
+let modifyer = false; 
+let mobileFactor = 0;
+
 if (navigator.userAgent.match(/Android/i)
     || navigator.userAgent.match(/webOS/i)
     || navigator.userAgent.match(/iPhone/i)
@@ -17,19 +20,25 @@ if (navigator.userAgent.match(/Android/i)
 } else {
     modifyer = 0; canvas.height = 400; canvas.width = document.documentElement.clientWidth + 20; mobileFactor = 0
 }
+
+
 let vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0)
 const rows = 9;
 const scale = (400 - modifyer) ** 1 / 10;
 let xMargin = (vw - scale * rows) / 2
+
 const positions = [];
 const yMargin = 10;
 const yTop = 100;
 const selected = {};
+
 selected.confirm = false;
 let errorCounter = 0;
 const population = 10;
 const selectedMemory = [];
 let puzzleFinished = false;
+
+
 function drawBorders() {
     ctx.lineWidth = 3;
     ctx.moveTo(xMargin, yMargin);
@@ -50,15 +59,14 @@ function drawBorders() {
     ctx.lineTo(xMargin + scale * rows + 3, yMargin + scale * rows + 3);
     ctx.lineTo(xMargin, yMargin + scale * rows + 3);
 }
+
+
 function setup() {
     //generate empty matrices
     for (let i = 0; i < rows; i++) {
         positions.push(new Array(rows));
         answerMap.push(new Array(rows));
     }
-
-
-
 //encode quadrant values
 for (let y = 0; y < rows; y++) {
     for (let x = 0; x < rows; x++) {
@@ -99,10 +107,12 @@ for (let y = 0; y < rows; y++) {
                 positions[x][y] = 90;
                 answerMap[x][y] = 90;
                 break;
+            }
         }
     }
 }
-}
+
+
 
 function setupDraw() {
     canvas.style = "width: fit-content;";
@@ -141,18 +151,23 @@ function setupDraw() {
             ctx.stroke();
         }
     }
-    render()
+    render();
 }
+
+
+
 function render() {
     vw = Math.max(document.documentElement.clientWidth || 0, window.innerWidth || 0)
     xMargin = (vw - scale * rows) / 2
     if (errorCounter != 0) { document.getElementById("commentary").innerHTML = `Errors  ${errorCounter}` }
     puzzleFinished = true;
+    
     canvas.style = "width: fit-content;";
     canvas.style = "height: fit-content;";
     ctx.font = `${scale - 12}px Nova Square`;
     ctx.beginPath();
     ctx.clearRect(0, 0, 100080, 100080);
+    
     drawBorders();
     ctx.stroke();
     ctx.lineWidth = 1;
@@ -215,9 +230,12 @@ function render() {
     if (puzzleFinished == true) { puzzleCompleted() }
 }
 
+
 function elementPos(x, scale, margin) {
     return x * scale + margin;
 }
+
+
 function selectCell(event) {
     if (
         event.clientX > xMargin &&
@@ -249,6 +267,8 @@ function selectCell(event) {
         }
     }
 }
+
+
 function clicked(button) {
     if (
         selected.confirm == true &&
@@ -271,6 +291,8 @@ function clicked(button) {
         }
     }
 }
+
+
 function checkAgainstRules(Xpos, Ypos) {
     if (positions[Xpos][Ypos] != answerMap[Xpos][Ypos]) { errorCounter++; return false; }
 }
@@ -279,6 +301,8 @@ function erase() {
         Math.floor(positions[selected.x][selected.y] / 10) * 10;
     render();
 }
+
+
 function undo() {
     if (selectedMemory.length != 0) {
         positions[
@@ -289,6 +313,8 @@ function undo() {
         render();
     }
 }
+
+
 // function puzzleCompleted() {
 //   canvas.style = "display: none;"
 //   document.getElementById("commentary").style = "display: none;"
