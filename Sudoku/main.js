@@ -38,7 +38,6 @@ const population = 10;
 const selectedMemory = [];
 let puzzleFinished = false;
 
-
 function drawBorders() {
     ctx.lineWidth = 3;
     ctx.moveTo(xMargin, yMargin);
@@ -242,20 +241,20 @@ function selectCell(event) {
         event.clientX < xMargin + scale * rows
     ) {
         if (
-            event.clientY > yTop &&
-            event.clientY < yTop + scale * rows + (scale / 2)
+            event.clientY + window.scrollY > yTop &&
+            event.clientY + window.scrollY < yTop + scale * rows + (scale / 2)
         ) {
             // positions[Math.round((event.clientX-(xMargin/2))/scale)][Math.round((event.clientY-yMargin)/scale)-1] <-- math for coordinates
             if (
                 Math.round((event.clientX - xMargin + 1) / scale) - 1 !=
                 -1 &&
-                Math.round((event.clientY - yTop) / scale) - 1 != -1
+                Math.round((event.clientY + window.scrollY - yTop) / scale) - 1 != -1
             ) {
                 selected.confirm = true;
                 selected.x =
                     Math.round(((event.clientX + 10) - xMargin) / scale) - 1;
                 selected.y =
-                    Math.round((event.clientY - yTop) / scale) - 1;
+                    Math.round((event.clientY + window.scrollY - yTop) / scale) - 1;
                 render();
             } else {
                 selected.confirm = false;
@@ -322,5 +321,7 @@ function undo() {
 //   document.getElementById("Title").innerHTML = "<br><br><br>Puzzle Completed!"
 //   document.getElementById("confetti").style = "display: flex;"
 // }
-setup();
-setupDraw();
+document.fonts.ready.then(() => {
+    setup();
+    setupDraw();
+});

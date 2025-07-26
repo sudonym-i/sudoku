@@ -49,14 +49,18 @@ function genorateSudoku() {
     generatePuzzle()
 }
 
-genorateSudoku()
-const addedMemory = []
-for (let y = 0; y < rows; y++) {
-    for (let x = 0; x < rows; x++) {
-        addedMemory.push(answerMap[x][y] % 10)
-        if (Math.round(Math.random() * 2) == 1) {
-            positions[x][y] = answerMap[x][y]
+document.fonts.ready.then(() => {
+    genorateSudoku();
+    const addedMemory = []
+    for (let y = 0; y < rows; y++) {
+        for (let x = 0; x < rows; x++) {
+            addedMemory.push(answerMap[x][y] % 10)
+            if (Math.round(Math.random() * 2) == 1) {
+                positions[x][y] = answerMap[x][y]
+            }
         }
     }
-}
-render()
+
+    render()
+
+});
